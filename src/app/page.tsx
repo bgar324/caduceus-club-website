@@ -17,7 +17,7 @@ export default function Home() {
             15th Annual Health Professions Conference
           </h1>
           <p className="mt-2 text-white text-lg">
-            Scroll down to find to find your session and submit feedback.
+          We'd love your thoughts — scroll down to find your session and send us your feedback.
           </p>
           <div className="mt-8 animate-bounce">
             <svg
