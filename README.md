@@ -1,1 +1,1 @@
-v1
+Note: This project is still in its early stages and currently represents a working first draft. The finalized version will reflect additional feedback and design decisions from the Caduceus Club. Check back a few days before the conference to see the approved and complete version.
