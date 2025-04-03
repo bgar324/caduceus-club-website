@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div className="min-h-screen font-[family-name:var(--font-geist-sans)]">
       <section className="relative min-h-[70vh] bg-[#733a84] flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-center px-4">
           <img
             src="/static/15th-annual-hpc-graphic-crop-v1.png"
             alt="15th Annual Health Professions Conference Logo"
