@@ -56,10 +56,10 @@ export default function Home() {
           <div className="rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300  border border-gray-100">
             <div className="flex items-center mx-auto">
               <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full">
-                <div className="bg-[#733a84] text-white px-4 py-2.5 rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
+                <div className="bg-[#733a84] text-white tracking-wide px-4 py-2.5 rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
                   <span className="mr-1.5 font-bold">A:</span> 8:00 - 9:00 AM
                 </div>
-                <span className="text-gray-800 text-xl font-medium truncate">
+                <span className="text-gray-800 text-xl font-medium truncate tracking-wide">
                   Keynote
                 </span>
               </div>
@@ -87,10 +87,10 @@ export default function Home() {
           <div className="rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300  border border-gray-100">
             <div className="flex items-center mx-auto">
               <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full">
-                <div className="bg-[#733a84] text-white px-4 py-2.5 rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
+                <div className="bg-[#733a84] text-white px-4 py-2.5 tracking-wide rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
                   <span className="mr-1.5 font-bold">B:</span> 9:30 - 10:30 AM
                 </div>
-                <span className="text-gray-800 text-xl font-medium truncate">
+                <span className="text-gray-800 text-xl font-medium truncate tracking-wide">
                   First Session
                 </span>
               </div>
@@ -124,10 +124,10 @@ export default function Home() {
           <div className="rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300  border border-gray-100">
             <div className="flex items-center mx-auto">
               <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full">
-                <div className="bg-[#733a84] text-white px-4 py-2.5 rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
+                <div className="bg-[#733a84] text-white px-4 py-2.5 tracking-wide rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
                   <span className="mr-1.5 font-bold">C:</span> 11:00 - 12:00 PM
                 </div>
-                <span className="text-gray-800 text-xl font-medium truncate">
+                <span className="text-gray-800 text-xl font-medium truncate tracking-wide">
                   Second Session
                 </span>
               </div>
