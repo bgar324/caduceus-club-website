@@ -1,102 +1,176 @@
-import Image from "next/image";
+import FeedbackBox from "./FeedbackBox";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen font-[family-name:var(--font-geist-sans)]">
+      <section className="relative min-h-[70vh] bg-[#733a84] flex items-center justify-center">
+        <div className="text-center">
+          <img
+            src="/static/15th-annual-hpc-graphic-crop-v1.png"
+            alt="15th Annual Health Professions Conference Logo"
+            width={600}
+            height={600}
+            loading="eager"
+            className="mx-auto"
+          />
+          <h1 className="mt-6 text-2xl sm:text-3xl font-bold text-white">
+            15th Annual Health Professions Conference
+          </h1>
+          <p className="mt-2 text-white text-lg">
+            Scroll down to find to find your session and submit feedback.
+          </p>
+          <div className="mt-8 animate-bounce">
+            <svg
+              className="w-6 h-6 mx-auto text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            ></svg>
+          </div>
+        </div>
+      </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      <main className="relative z-20 bg-white rounded-t-xl -mt-6 h-auto px-4 md:px-64 py-8 w-full">
+        <section id="conference-form" className="mb-12 text-center">
+          <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-2xl transition-all mx-auto duration-300 hover:-translate-y-[.125rem]">
+            <h3 className="font-semibold mb-3 text-gray-800 text-xl">
+              Annual Health Professions Conference Survey
+            </h3>
+            <p className="text-gray-600 mb-5">
+              Thank you for attending! Please fill out this quick survey so we
+              may improve next year.
+            </p>
+            <a
+              href="https://forms.google.com/keynote-feedback"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-3 px-4 bg-[#733a84] text-white text-center rounded-lg font-medium hover:bg-purple-700 transition-all shadow-md hover:shadow-lg"
+            >
+              Provide Feedback
+            </a>
+          </div>
+        </section>
+
+        <section id="A" className="mb-10 bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+          <div className="rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300  border border-gray-100">
+            <div className="flex items-center mx-auto">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full">
+                <div className="bg-[#733a84] text-white px-4 py-2.5 rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
+                  <span className="mr-1.5 font-bold">A:</span> 8:00 - 9:00 AM
+                </div>
+                <span className="text-gray-800 text-xl font-medium truncate">
+                  Keynote
+                </span>
+              </div>
+              <div className="flex-grow h-0.5 bg-[#733a84] ml-6"></div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col gap-6">
+            <FeedbackBox 
+              title="Keynote Address: Future of Healthcare"
+              description="Join Dr. Sarah Johnson for an inspiring talk on emerging healthcare trends and opportunities."
+              feedbackUrl="https://forms.google.com/keynote-feedback"
             />
-            Deploy now
+            
+            <FeedbackBox 
+              title="Medical School Application Workshop"
+              description="Learn essential tips for crafting a successful medical school application from admissions experts."
+              feedbackUrl="https://forms.google.com/med-school-workshop"
+            />
+            
+          </div>
+        </section>
+
+        <section id="B" className="mb-10 bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+          <div className="rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300  border border-gray-100">
+            <div className="flex items-center mx-auto">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full">
+                <div className="bg-[#733a84] text-white px-4 py-2.5 rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
+                  <span className="mr-1.5 font-bold">B:</span> 9:30 - 10:30 AM
+                </div>
+                <span className="text-gray-800 text-xl font-medium truncate">
+                  First Session
+                </span>
+              </div>
+              <div className="flex-grow h-0.5 bg-[#733a84] ml-6"></div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col gap-6">
+            <FeedbackBox 
+              title="Healthcare Technology Innovation"
+              description="Explore cutting-edge technologies transforming patient care and medical practice."
+              feedbackUrl="https://forms.google.com/tech-innovation"
+            />
+            
+            <FeedbackBox 
+              title="Public Health Careers Panel"
+              description="Learn about diverse opportunities in public health from professionals in the field."
+              feedbackUrl="https://forms.google.com/public-health"
+            />
+            
+            <FeedbackBox 
+              title="Pharmacy School Preparation"
+              description="Essential information for pre-pharmacy students about application requirements and career paths."
+              feedbackUrl="https://forms.google.com/pharmacy-prep"
+            />
+            
+          </div>
+        </section>
+
+        <section id="C" className="mb-10 bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+          <div className="rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300  border border-gray-100">
+            <div className="flex items-center mx-auto">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full">
+                <div className="bg-[#733a84] text-white px-4 py-2.5 rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
+                  <span className="mr-1.5 font-bold">C:</span> 11:00 - 12:00 PM
+                </div>
+                <span className="text-gray-800 text-xl font-medium truncate">
+                  Second Session
+                </span>
+              </div>
+              <div className="flex-grow h-0.5 bg-[#733a84] ml-6"></div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col gap-6">
+            <FeedbackBox 
+              title="Allied Health Professions Showcase"
+              description="Discover careers in physical therapy, occupational therapy, and other allied health fields."
+              feedbackUrl="https://forms.google.com/allied-health"
+            />
+          
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-[#733a84] text-white py-6 px-4 text-center">
+        <p className="mb-2">
+          ben © 2025 15th Annual Health Professions Conference
+        </p>
+        <p className="text-sm">
+          For assistance, please contact{" "}
+          <a href="mailto:crexach@mtsac.edu" className="underline">
+            crexach@mtsac.edu
+          </a>
+        </p>
+        <div className="flex justify-center mt-4 space-x-4">
+          <a
+            href="https://linktr.ee/mtsaccaduceusclub"
+            className="underline text-sm hover:text-purple-200 transition-colors"
+          >
+            linktr.ee
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="https://www.mtsac.edu/caduceus/"
+            className="underline text-sm hover:text-purple-200 transition-colors"
           >
-            Read our docs
+            club website
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
       </footer>
     </div>
   );
