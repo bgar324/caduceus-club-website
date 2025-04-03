@@ -59,7 +59,7 @@ export default function Home() {
                 <div className="bg-[#733a84] text-white tracking-wide px-4 py-2.5 rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
                   <span className="mr-1.5 font-bold">A:</span> 8:00 - 9:00 AM
                 </div>
-                <span className="text-gray-800 text-xl font-medium truncate tracking-wide">
+                <span className="text-gray-800 text-xl font-medium truncate tracking-normal">
                   Keynote
                 </span>
               </div>
@@ -90,7 +90,7 @@ export default function Home() {
                 <div className="bg-[#733a84] text-white px-4 py-2.5 tracking-wide rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
                   <span className="mr-1.5 font-bold">B:</span> 9:30 - 10:30 AM
                 </div>
-                <span className="text-gray-800 text-xl font-medium truncate tracking-wide">
+                <span className="text-gray-800 text-xl font-medium truncate">
                   First Session
                 </span>
               </div>
@@ -127,7 +127,7 @@ export default function Home() {
                 <div className="bg-[#733a84] text-white px-4 py-2.5 tracking-wide rounded-lg flex items-center justify-center font-semibold text-base shadow-md whitespace-nowrap">
                   <span className="mr-1.5 font-bold">C:</span> 11:00 - 12:00 PM
                 </div>
-                <span className="text-gray-800 text-xl font-medium truncate tracking-wide">
+                <span className="text-gray-800 text-xl font-medium truncate">
                   Second Session
                 </span>
               </div>
