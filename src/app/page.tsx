@@ -42,7 +42,7 @@ export default function Home() {
               may improve next year.
             </p>
             <a
-              href="https://forms.google.com/keynote-feedback"
+              href="https://forms.gle/6kAsHAJNWZ6rGDqd9"
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full py-3 px-4 bg-[#733a84] text-white text-center rounded-lg font-medium hover:bg-purple-700 transition-all shadow-md hover:shadow-lg"
