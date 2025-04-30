@@ -1,21 +1,24 @@
 import React from 'react';
 
 interface FeedbackBoxProps {
-  title: string;
+  sessionLetter: string;
+  sessionTitle: string;
   description: string;
   feedbackUrl: string;
   buttonText?: string;
 }
 
 const FeedbackBox: React.FC<FeedbackBoxProps> = ({
-  title,
+  sessionLetter,
+  sessionTitle,
   description,
   feedbackUrl,
   buttonText = "Submit Feedback"
 }) => {
   return (
-    <div className="mt-6 rounded-lg border border-gray-200 p-5">
-      <h4 className="font-medium text-lg text-gray-800 mb-2">{title}</h4>
+    <div className="rounded-lg border border-gray-200 p-5">
+      <h4 className="font-semibold text-lg text-gray-800">Session {sessionLetter}</h4>
+      <h4 className="font-medium text-lg text-gray-800 mb-2">{sessionTitle}</h4>
       <p className="text-gray-600 mb-4">{description}</p>
       <a
         href={feedbackUrl}
