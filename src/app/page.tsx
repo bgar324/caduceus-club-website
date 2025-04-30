@@ -253,7 +253,7 @@ export default function Home() {
             Instagram
           </a>
         </div>
-        <a href="https:/bentgarcia.com">
+        <a href="https://bentgarcia.com">
           <Image
             src="/static/favicon.svg"
             alt="Website made by Benjamin Garcia"
