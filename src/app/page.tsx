@@ -71,7 +71,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-12 py-4">
+          <div className="flex flex-col gap-6 py-4">
             <FeedbackBox
               sessionLetter="A:"
               sessionTitle="Careers in Medicine"
@@ -128,7 +128,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-12 py-4">
+          <div className="flex flex-col gap-6 py-4">
             <FeedbackBox
               sessionLetter="A:"
               sessionTitle="A Military Career in Dentistry"
@@ -185,7 +185,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-12 py-4">
+          <div className="flex flex-col gap-6 py-4">
             <FeedbackBox
               sessionLetter="A:"
               sessionTitle="Medical School Admissions Panel"

@@ -1,11 +1,17 @@
-import React from 'react';
+import React from "react"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 interface FeedbackBoxProps {
-  sessionLetter: string;
-  sessionTitle: string;
-  description: string;
-  feedbackUrl: string;
-  buttonText?: string;
+  sessionLetter: string
+  sessionTitle: string
+  description: string
+  feedbackUrl: string
+  buttonText?: string
 }
 
 const FeedbackBox: React.FC<FeedbackBoxProps> = ({
@@ -16,20 +22,34 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({
   buttonText = "Submit Feedback"
 }) => {
   return (
-    <div className="rounded-lg border border-gray-200 p-5">
-      <h4 className="font-semibold text-lg text-gray-800">Session {sessionLetter}</h4>
-      <h4 className="font-medium text-lg text-gray-800 mb-2">{sessionTitle}</h4>
-      <p className="text-gray-600 mb-4">{description}</p>
-      <a
-        href={feedbackUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block py-2 px-4 bg-[#733a84] text-white rounded-lg font-medium hover:bg-purple-700 transition-all"
-      >
-        {buttonText}
-      </a>
-    </div>
-  );
-};
+    <Accordion type="single" collapsible className="w-full border rounded-md">
+      <AccordionItem value="item-1">
+        <AccordionTrigger className="px-4 py-3">
+          <div className="flex flex-col text-left">
+            <span className="text-base font-medium text-gray-700">
+              Session {sessionLetter}
+            </span>
+            <span className="text-lg font-semibold text-gray-900">
+              {sessionTitle}
+            </span>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent className="px-4 pb-4">
+          <p className="text-base text-gray-600 mb-4">
+            {description}
+          </p>
+          <a
+            href={feedbackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-md bg-[#733a84] px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-purple-700 transition-colors"
+          >
+            {buttonText}
+          </a>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  )
+}
 
-export default FeedbackBox;
+export default FeedbackBox
