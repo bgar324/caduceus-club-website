@@ -133,10 +133,7 @@ export default function Home() {
               />
             </AccordionTrigger>
             <AccordionContent>
-              <section
-                id="Workshop 2 Sessions"
-                className="bg-white py-4 px-2"
-              >
+              <section id="Workshop 2 Sessions" className="bg-white py-4 px-2">
                 <div className="flex flex-col gap-6 pt-2 pb-4">
                   <FeedbackBox
                     sessionLetter="A:"
@@ -193,10 +190,7 @@ export default function Home() {
               />
             </AccordionTrigger>
             <AccordionContent>
-              <section
-                id="Workshop 3 Sessions"
-                className="bg-white py-4 px-2"
-              >
+              <section id="Workshop 3 Sessions" className="bg-white py-4 px-2">
                 <div className="flex flex-col gap-6 pt-2 pb-4">
                   <FeedbackBox
                     sessionLetter="A:"
@@ -240,7 +234,14 @@ export default function Home() {
           </AccordionItem>
         </Accordion>
 
-        <Separator className="bg-gray-200 mb-10" />
+        <div className="flex flex-row mb-10 mx-6">
+          <Separator className="bg-gray-300 mr-8" />
+          {/* <span className="text-gray-800 text-sm font-medium truncate">
+            Focus Groups
+          </span>
+          <Separator className="bg-gray-200 ml-8" /> */}
+        </div>
+
         <Accordion
           type="single"
           collapsible
