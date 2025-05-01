@@ -353,7 +353,7 @@ export default function Home() {
             <AccordionTrigger className="px-2 py-3 font-semibold text-left text-lg text-gray-800 items-center hover:no-underline gap-2">
               <SessionHeader
                 headerTitle="Focus Group 3 Sessions"
-                headerTime="3:45 pm - 4:30 pm"
+                headerTime="4:45 pm - 5:05 pm"
               />
             </AccordionTrigger>
             <AccordionContent>
@@ -393,9 +393,8 @@ export default function Home() {
         </Accordion>
       </main>
 
-      {/* Footer */}
       <footer className="bg-[#733a84] text-white py-6 px-4 text-center">
-        <p className="mb-2">15th Annual Health Professions Conference</p>
+        <p className="mb-2 font-medium">15th Annual Health Professions Conference</p>
         <p className="text-sm">
           For further assistance, questions, or concerns please contact{" "}
           <a
