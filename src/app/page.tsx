@@ -13,8 +13,8 @@ import { ChevronDown } from "lucide-react";
 export default function Home() {
   return (
     <div className="min-h-screen font-[family-name:var(--font-geist-sans)]">
-      <section className="relative min-h-[70vh] bg-[#733a84] flex items-cent</section>er justify-center">
-        <div className="text-ce</div>nter px-4">
+      <section className="relative min-h-[70vh] bg-[#733a84] flex items-center justify-center text-center">
+        <div className="text-center p-4">
           <Image
             src="/static/15th-annual-hpc-graphic-crop-v1.png"
             alt="15th Annual Health Professions Conference Logo"
