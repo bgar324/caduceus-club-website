@@ -353,7 +353,7 @@ export default function Home() {
             <AccordionTrigger className="px-2 py-3 font-semibold text-left text-lg text-gray-800 items-center hover:no-underline gap-2">
               <SessionHeader
                 headerTitle="Focus Group 3 Sessions"
-                headerTime="4:45 pm - 5:05 pm"
+                headerTime="4:30 pm - 5:15 pm"
               />
             </AccordionTrigger>
             <AccordionContent>
@@ -410,7 +410,7 @@ export default function Home() {
             href="https://www.mtsac.edu/caduceus/"
             className="underline text-sm hover:text-purple-200 transition-colors"
           >
-            Club Website
+            Caduceus Club Website
           </a>
           <a
             href="https://www.instagram.com/mtsac.caduceusclub"
