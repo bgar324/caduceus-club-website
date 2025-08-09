@@ -12,24 +12,27 @@ import { ChevronDown } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen font-[family-name:var(--font-geist-sans)]">
-      <section className="relative min-h-[70vh] bg-[#733a84] flex items-center justify-center text-center">
-        <div className="text-center p-4">
-          <Image
-            src="/static/15th-annual-hpc-graphic-crop-v1.png"
-            alt="15th Annual Health Professions Conference Logo"
-            width={600}
-            height={600}
-            loading="eager"
-            className="mx-auto"
-          />
-          <h1 className="mt-6 text-2xl sm:text-3xl font-bold text-white">
-            15th Annual Health Professions Conference
-          </h1>
-          <p className="mt-2 text-white text-lg">
-            We'd love to hear your thoughts — scroll down to find your session
-            and send us your feedback.
-          </p>
+    <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex flex-col">
+      <section className="relative min-h-[70vh] bg-[#733a84] flex items-center justify-center text-center px-4 py-12 sm:py-0">
+        <div className="max-w-4xl w-full px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto">
+            <Image
+              src="/static/15th-annual-hpc-graphic-crop-v1.png"
+              alt="15th Annual Health Professions Conference Logo"
+              width={600}
+              height={600}
+              loading="eager"
+              className="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg"
+              priority
+            />
+            <h1 className="mt-6 text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
+              15th Annual Health Professions Conference
+            </h1>
+            <p className="mt-4 text-white text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
+              We'd love to hear your thoughts — scroll down to find your session
+              and send us your feedback.
+            </p>
+          </div>
           <div className="mt-8 animate-bounce">
             <svg
               className="w-6 h-6 mx-auto text-white"
@@ -42,9 +45,9 @@ export default function Home() {
         </div>
       </section>
 
-      <main className="relative z-20 bg-white rounded-t-xl -mt-6 h-auto px-2 md:px-128 py-8 w-full">
+      <main className="relative z-20 bg-white rounded-t-xl h-auto px-4 sm:px-6 lg:px-8 py-8 w-full max-w-7xl mx-auto">
         <section id="conference-form" className="mb-12 text-center">
-          <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-2xl transition-all mx-auto duration-300 hover:-translate-y-[.125rem]">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 border border-gray-200 hover:shadow-2xl transition-all mx-auto max-w-3xl duration-300 hover:-translate-y-[.125rem]">
             <h3 className="font-semibold mb-3 text-gray-800 text-xl">
               Annual Health Professions Conference Survey
             </h3>
@@ -234,12 +237,12 @@ export default function Home() {
           </AccordionItem>
         </Accordion>
 
-        <div className="flex flex-row mb-10 mx-6">
-          <Separator className="bg-gray-300 mr-8" />
-          {/* <span className="text-gray-800 text-sm font-medium truncate">
-            Focus Groups
-          </span>
-          <Separator className="bg-gray-200 ml-8" /> */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+          </div>
         </div>
 
         <Accordion
@@ -393,42 +396,50 @@ export default function Home() {
         </Accordion>
       </main>
 
-      <footer className="bg-[#733a84] text-white py-6 px-4 text-center">
-        <p className="mb-2 font-medium">15th Annual Health Professions Conference</p>
-        <p className="text-sm">
-          For further assistance, questions, or concerns please contact{" "}
-          <a
-            href="mailto:crexach@mtsac.edu"
-            className="underline text-blue-300 hover:text-purple-200 transition-colors"
-          >
-            crexach@mtsac.edu
-          </a>
-          .
-        </p>
-        <div className="flex justify-center mt-4 mb-6 space-x-8">
-          <a
-            href="https://www.mtsac.edu/caduceus/"
-            className="underline text-sm hover:text-purple-200 transition-colors"
-          >
-            Caduceus Club Website
-          </a>
-          <a
-            href="https://www.instagram.com/mtsac.caduceusclub"
-            className="underline text-sm hover:text-purple-200 transition-colors"
-          >
-            Instagram
-          </a>
+      <footer className="bg-[#733a84] text-white py-8 px-4 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-lg font-medium mb-3">15th Annual Health Professions Conference</p>
+          <p className="text-sm sm:text-base max-w-2xl mx-auto">
+            For further assistance, questions, or concerns please contact{" "}
+            <a
+              href="mailto:crexach@mtsac.edu"
+              className="underline text-blue-300 hover:text-purple-200 transition-colors break-words"
+            >
+              crexach@mtsac.edu
+            </a>
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center items-center mt-6 mb-4 space-y-3 sm:space-y-0 sm:space-x-8">
+            <a
+              href="https://www.mtsac.edu/caduceus/"
+              className="text-sm sm:text-base hover:text-purple-200 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Caduceus Club Website
+            </a>
+            <span className="hidden sm:inline text-gray-300">•</span>
+            <a
+              href="https://www.instagram.com/mtsac.caduceusclub"
+              className="text-sm sm:text-base hover:text-purple-200 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          </div>
+          <div className="mt-6">
+            <a href="https://bentgarcia.com" target="_blank" rel="noopener noreferrer" className="inline-block">
+              <Image
+                src="/static/favicon.svg"
+                alt="Website made by Benjamin Garcia"
+                width={20}
+                height={20}
+                loading="lazy"
+                className="mx-auto opacity-80 hover:opacity-100 transition-opacity"
+              />
+            </a>
+          </div>
         </div>
-        <a href="https://bentgarcia.com">
-          <Image
-            src="/static/favicon.svg"
-            alt="Website made by Benjamin Garcia"
-            width={20}
-            height={20}
-            loading="eager"
-            className="mx-auto"
-          />
-        </a>
       </footer>
     </div>
   );
