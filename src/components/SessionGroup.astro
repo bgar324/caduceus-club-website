@@ -1,0 +1,53 @@
+---
+import FeedbackBox from "./FeedbackBox.astro";
+import SessionHeader from "./SessionHeader.astro";
+import type { SessionGroup } from "../data/sessions";
+
+interface Props {
+  group: SessionGroup;
+}
+
+const { group } = Astro.props;
+const summaryId = `${group.id}-summary`;
+const panelId = `${group.id}-panel`;
+---
+
+<details class="group mb-10 rounded-lg border border-gray-200 bg-white shadow-lg">
+  <summary
+    id={summaryId}
+    aria-controls={panelId}
+    class="session-summary list-none cursor-pointer focus-visible:rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-[#733a84]/25 [&::-webkit-details-marker]:hidden"
+  >
+    <div class="flex items-center justify-between gap-2 px-2 py-3 text-left text-lg font-semibold text-gray-800 transition-all hover:no-underline">
+      <SessionHeader headerTitle={group.title} headerTime={group.time} />
+      <svg
+        class="session-chevron pointer-events-none h-4 w-4 shrink-0 translate-y-0.5 text-gray-500 transition-transform duration-200"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </div>
+  </summary>
+
+  <div class="overflow-hidden text-sm">
+    <div class="pt-0 pb-4">
+      <section id={panelId} aria-labelledby={summaryId} class="bg-white py-4 px-2">
+        <div class={`flex flex-col gap-6 ${group.sessionListClass}`}>
+          {group.sessions.map((session) => <FeedbackBox {...session} />)}
+        </div>
+      </section>
+    </div>
+  </div>
+</details>
+
+<style>
+  details[open] .session-chevron {
+    transform: translateY(0.125rem) rotate(180deg);
+  }
+</style>

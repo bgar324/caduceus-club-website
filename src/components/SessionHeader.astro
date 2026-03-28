@@ -1,0 +1,17 @@
+---
+interface Props {
+  headerTitle: string;
+  headerTime: string;
+}
+
+const { headerTitle, headerTime } = Astro.props;
+---
+
+<div class="mx-auto flex items-center justify-center">
+  <div class="flex w-fit items-center gap-3">
+    <h2 class="flex w-fit items-center justify-center rounded-lg bg-[#733a84] px-2 py-2.5 text-sm font-semibold tracking-wide text-white shadow-md whitespace-nowrap">
+      <span class="font-bold">{headerTitle}</span>
+    </h2>
+    <p class="text-sm font-medium text-gray-800">{headerTime}</p>
+  </div>
+</div>

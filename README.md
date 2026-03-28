@@ -1,6 +1,6 @@
 # 15th Annual Health Professions Conference – Feedback Website
 
-This is a React + Next.js-based feedback website created for the 15th Annual Health Professions Conference. Attendees can use it to submit session-specific feedback via linked Google Forms. The site organizes sessions by workshop and focus group times, each featuring a collapsible accordion UI for navigation.
+This is an Astro-based feedback website created for the 15th Annual Health Professions Conference. Attendees can use it to submit session-specific feedback via linked Google Forms. The site organizes sessions by workshop and focus group times with native `<details>` sections for navigation.
 
 ## Features
 - Categorized session listings by time slots (Workshop 1–3, Focus Group 1–3)
@@ -11,12 +11,11 @@ This is a React + Next.js-based feedback website created for the 15th Annual Hea
 - Responsive and mobile-friendly layout
 
 ## Tech Stack
-- **Framework:** Next.js
+- **Framework:** Astro
 - **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **Icons:** Lucide React
-- **Image Optimization:** next/image
-- **UI Components:** Custom + ShadCN Accordion
+- **Styling:** Tailwind CSS v4
+- **Fonts:** Geist Sans + Geist Mono
+- **Interactivity:** Native HTML `<details>` sections
 
 ## Installation
 Clone the repository:
@@ -40,15 +39,16 @@ npm run dev
 ```
 
 Open the browser and visit:
-```
-http://localhost:3000
+```text
+http://localhost:4321
 ```
 
 ## Deployment
-This project can be deployed using any platform that supports Next.js:
-- Vercel
-- Netlify (with Next.js adapter)
-- Custom Node.js server
+This project builds to a static site and can be deployed on any static host:
+- Netlify
+- Cloudflare Pages
+- GitHub Pages
+- Vercel static hosting
 
 ## Credits
 **Developed by:** Benjamin Garcia

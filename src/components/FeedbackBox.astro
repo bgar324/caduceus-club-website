@@ -1,0 +1,35 @@
+---
+import type { Session } from "../data/sessions";
+
+interface Props extends Session {}
+
+const {
+  letter,
+  title,
+  description,
+  feedbackUrl,
+  buttonText = "Submit Feedback",
+} = Astro.props;
+const headingSlug = `${letter}-${title}-${feedbackUrl}`
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-")
+  .replace(/^-+|-+$/g, "");
+const headingId = `session-${headingSlug}`;
+---
+
+<article aria-labelledby={headingId} class="w-full rounded-md border border-gray-200 px-4 py-3">
+  <div class="mb-3 flex flex-col text-left">
+    <p class="text-base font-medium text-gray-700">Session {letter}</p>
+    <h3 id={headingId} class="text-lg font-semibold text-gray-900">{title}</h3>
+  </div>
+  <p class="mb-4 text-base text-gray-600">{description}</p>
+  <a
+    href={feedbackUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`Submit feedback for ${title} (opens in a new tab)`}
+    class="inline-flex items-center justify-center rounded-md bg-[#733a84] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#733a84]"
+  >
+    {buttonText}
+  </a>
+</article>

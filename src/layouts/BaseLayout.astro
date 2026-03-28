@@ -1,0 +1,33 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "15th Annual HPC Forms",
+  description = "Session-specific feedback site for the 15th Annual Health Professions Conference.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/x-icon" href="/static/15th-annual-hpc-graphic-crop-v1.ico" />
+  </head>
+  <body class="m-0 font-sans antialiased">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-3 focus:font-semibold focus:text-gray-900 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[#733a84]"
+    >
+      Skip to main content
+    </a>
+    <slot />
+  </body>
+</html>

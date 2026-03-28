@@ -1,0 +1,151 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SessionGroup from "../components/SessionGroup.astro";
+import { sessionGroups, surveyUrl } from "../data/sessions";
+
+const pageTitle = "15th Annual HPC Forms";
+const pageDescription =
+  "Attendee feedback website for the 15th Annual Health Professions Conference.";
+const workshopGroups = sessionGroups.slice(0, 3);
+const focusGroups = sessionGroups.slice(3);
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="min-h-screen flex flex-col">
+    <header class="relative flex min-h-[70vh] items-center justify-center bg-[#733a84] px-4 py-12 text-center sm:py-0">
+      <div class="max-w-4xl w-full px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto">
+          <img
+            src="/static/15th-annual-hpc-graphic-crop-v1.png"
+            alt="15th Annual Health Professions Conference Logo"
+            width="600"
+            height="600"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            class="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg"
+          />
+          <h1 class="mt-6 text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
+            15th Annual Health Professions Conference
+          </h1>
+          <p class="mt-4 text-white text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
+            We'd love to hear your thoughts — scroll down to find your session and send us your
+            feedback.
+          </p>
+        </div>
+        <div aria-hidden="true" class="mt-8 motion-safe:animate-bounce motion-reduce:animate-none">
+          <svg
+            class="w-6 h-6 mx-auto text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="m19 9-7 7-7-7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <main
+      id="main-content"
+      tabindex="-1"
+      class="relative z-20 bg-white rounded-t-xl h-auto px-4 sm:px-6 lg:px-8 py-8 w-full max-w-7xl mx-auto focus:outline-none"
+    >
+      <section id="conference-form" aria-labelledby="conference-survey-heading" class="mb-12 text-center">
+        <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 border border-gray-200 hover:shadow-2xl transition-all mx-auto max-w-3xl duration-300 hover:-translate-y-[.125rem]">
+          <h2 id="conference-survey-heading" class="font-semibold mb-3 text-gray-800 text-xl">
+            Annual Health Professions Conference Survey
+          </h2>
+          <p class="text-gray-600 mb-5">
+            Thank you for attending! Please fill out this quick survey so we may improve next
+            year.
+          </p>
+          <a
+            href={surveyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Provide feedback for the Annual Health Professions Conference Survey (opens in a new tab)"
+            class="block w-full py-3 px-4 bg-[#733a84] text-white text-center rounded-lg font-medium hover:bg-purple-700 transition-all shadow-md hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#733a84]"
+          >
+            Provide Feedback
+          </a>
+        </div>
+      </section>
+
+      {workshopGroups.map((group) => <SessionGroup group={group} />)}
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+        </div>
+      </div>
+
+      {focusGroups.map((group) => <SessionGroup group={group} />)}
+    </main>
+
+    <footer class="bg-[#733a84] text-white py-8 px-4 text-center">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-lg font-medium mb-3">15th Annual Health Professions Conference</p>
+        <p class="text-sm sm:text-base max-w-2xl mx-auto">
+          For further assistance, questions, or concerns please contact
+          <a
+            href="mailto:crexach@mtsac.edu"
+            class="underline text-blue-300 hover:text-purple-200 transition-colors break-words focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            crexach@mtsac.edu
+          </a>
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center items-center mt-6 mb-4 space-y-3 sm:space-y-0 sm:space-x-8">
+          <a
+            href="https://www.mtsac.edu/caduceus/"
+            class="text-sm sm:text-base hover:text-purple-200 transition-colors focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Caduceus Club Website (opens in a new tab)"
+          >
+            Caduceus Club Website
+          </a>
+          <span class="hidden sm:inline text-gray-300">•</span>
+          <a
+            href="https://www.instagram.com/mtsac.caduceusclub"
+            class="text-sm sm:text-base hover:text-purple-200 transition-colors focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram (opens in a new tab)"
+          >
+            Instagram
+          </a>
+        </div>
+        <div class="mt-6">
+          <a
+            href="https://bentgarcia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            aria-label="Website made by Benjamin Garcia (opens in a new tab)"
+          >
+            <img
+              src="/static/favicon.svg"
+              alt=""
+              aria-hidden="true"
+              width="20"
+              height="20"
+              loading="lazy"
+              decoding="async"
+              class="mx-auto opacity-80 hover:opacity-100 transition-opacity"
+            />
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
