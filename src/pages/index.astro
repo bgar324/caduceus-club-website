@@ -1,13 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SessionGroup from "../components/SessionGroup.astro";
-import { sessionGroups, surveyUrl } from "../data/sessions";
+import { getSessionGroupCategory } from "../data/sessions";
+import { getHomepageContent } from "../lib/content";
 
-const pageTitle = "15th Annual HPC Forms";
-const pageDescription =
-  "Attendee feedback website for the 15th Annual Health Professions Conference.";
-const workshopGroups = sessionGroups.slice(0, 3);
-const focusGroups = sessionGroups.slice(3);
+const homepageContent = await getHomepageContent();
+const { site, sessionGroups } = homepageContent.content;
+const pageTitle = site.hero.title;
+const pageDescription = site.hero.description;
+const workshopGroups = sessionGroups.filter((group) => getSessionGroupCategory(group) === "workshop");
+const focusGroups = sessionGroups.filter((group) => getSessionGroupCategory(group) === "focus");
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -16,8 +18,8 @@ const focusGroups = sessionGroups.slice(3);
       <div class="max-w-4xl w-full px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mx-auto">
           <img
-            src="/static/15th-annual-hpc-graphic-crop-v1.png"
-            alt="15th Annual Health Professions Conference Logo"
+            src={site.hero.imageSrc}
+            alt={site.hero.imageAlt}
             width="600"
             height="600"
             loading="eager"
@@ -26,11 +28,10 @@ const focusGroups = sessionGroups.slice(3);
             class="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg"
           />
           <h1 class="mt-6 text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
-            15th Annual Health Professions Conference
+            {site.hero.title}
           </h1>
           <p class="mt-4 text-white text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
-            We'd love to hear your thoughts — scroll down to find your session and send us your
-            feedback.
+            {site.hero.description}
           </p>
         </div>
         <div aria-hidden="true" class="mt-8 motion-safe:animate-bounce motion-reduce:animate-none">
@@ -61,33 +62,30 @@ const focusGroups = sessionGroups.slice(3);
       <section id="conference-form" aria-labelledby="conference-survey-heading" class="mb-12 text-center">
         <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 border border-gray-200 hover:shadow-2xl transition-all mx-auto max-w-3xl duration-300 hover:-translate-y-[.125rem]">
           <h2 id="conference-survey-heading" class="font-semibold mb-3 text-gray-800 text-xl">
-            Annual Health Professions Conference Survey
+            {site.survey.title}
           </h2>
           <p class="text-gray-600 mb-5">
-            Thank you for attending! Please fill out this quick survey so we may improve next
-            year.
+            {site.survey.description}
           </p>
           <a
-            href={surveyUrl}
+            href={site.survey.feedbackUrl}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Provide feedback for the Annual Health Professions Conference Survey (opens in a new tab)"
-            class="block w-full py-3 px-4 bg-[#733a84] text-white text-center rounded-lg font-medium hover:bg-purple-700 transition-all shadow-md hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#733a84]"
+            aria-label={`Provide feedback for ${site.survey.title} (opens in a new tab)`}
+            class="block w-full cursor-pointer rounded-lg bg-[#733a84] px-4 py-3 text-center font-medium text-white shadow-md transition-all hover:bg-purple-700 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#733a84]"
           >
-            Provide Feedback
+            {site.survey.buttonText}
           </a>
         </div>
       </section>
 
       {workshopGroups.map((group) => <SessionGroup group={group} />)}
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
-        <div class="relative">
-          <div class="absolute inset-0 flex items-center" aria-hidden="true">
-            <div class="w-full border-t border-gray-300"></div>
-          </div>
+      {workshopGroups.length > 0 && focusGroups.length > 0 && (
+        <div class="mx-auto my-8 w-full max-w-3xl px-2 sm:px-0" aria-hidden="true">
+          <div class="border-t border-gray-300"></div>
         </div>
-      </div>
+      )}
 
       {focusGroups.map((group) => <SessionGroup group={group} />)}
     </main>
@@ -99,7 +97,7 @@ const focusGroups = sessionGroups.slice(3);
           For further assistance, questions, or concerns please contact
           <a
             href="mailto:crexach@mtsac.edu"
-            class="underline text-blue-300 hover:text-purple-200 transition-colors break-words focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            class="cursor-pointer break-words text-blue-300 underline transition-colors hover:text-purple-200 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             crexach@mtsac.edu
           </a>
@@ -107,7 +105,7 @@ const focusGroups = sessionGroups.slice(3);
         <div class="flex flex-col sm:flex-row justify-center items-center mt-6 mb-4 space-y-3 sm:space-y-0 sm:space-x-8">
           <a
             href="https://www.mtsac.edu/caduceus/"
-            class="text-sm sm:text-base hover:text-purple-200 transition-colors focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            class="cursor-pointer text-sm transition-colors hover:text-purple-200 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:text-base"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Caduceus Club Website (opens in a new tab)"
@@ -117,12 +115,19 @@ const focusGroups = sessionGroups.slice(3);
           <span class="hidden sm:inline text-gray-300">•</span>
           <a
             href="https://www.instagram.com/mtsac.caduceusclub"
-            class="text-sm sm:text-base hover:text-purple-200 transition-colors focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            class="cursor-pointer text-sm transition-colors hover:text-purple-200 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:text-base"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram (opens in a new tab)"
           >
             Instagram
+          </a>
+          <span class="hidden sm:inline text-gray-300">•</span>
+          <a
+            href="/cms"
+            class="cursor-pointer text-sm transition-colors hover:text-purple-200 focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:text-base"
+          >
+            Dashboard / CMS
           </a>
         </div>
         <div class="mt-6">
@@ -130,7 +135,7 @@ const focusGroups = sessionGroups.slice(3);
             href="https://bentgarcia.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-block rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            class="inline-block cursor-pointer rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             aria-label="Website made by Benjamin Garcia (opens in a new tab)"
           >
             <img

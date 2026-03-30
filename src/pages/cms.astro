@@ -1,0 +1,823 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getSessionGroupCategory } from "../data/sessions";
+import { getCmsStatusMessage, getHomepageContent } from "../lib/content";
+
+const homepageContent = await getHomepageContent();
+const { site, sessionGroups } = homepageContent.content;
+const workshopGroups = sessionGroups.filter((group) => getSessionGroupCategory(group) === "workshop");
+const focusGroups = sessionGroups.filter((group) => getSessionGroupCategory(group) === "focus");
+const statusMessage = getCmsStatusMessage(Astro.url.searchParams.get("status"));
+const errorMessage = Astro.url.searchParams.get("error");
+const warningMessage = errorMessage ?? homepageContent.warning;
+const currentSnapshotJson = JSON.stringify(homepageContent.content).replace(/</g, "\\u003c");
+const panelClass = "rounded-xl border border-gray-200 bg-white p-6 shadow-sm";
+const nestedPanelClass = "rounded-lg border border-gray-200 bg-gray-50 p-4";
+const inputClass =
+  "mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
+const selectClass = `${inputClass} cursor-pointer`;
+const primaryButtonClass =
+  "inline-flex cursor-pointer items-center justify-center rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 disabled:cursor-not-allowed disabled:bg-gray-300";
+const secondaryButtonClass =
+  "inline-flex cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400";
+const dangerButtonClass =
+  "inline-flex cursor-pointer items-center justify-center rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 transition hover:border-red-300 hover:bg-red-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500";
+const stickyButtonClass =
+  "inline-flex cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:border-gray-400 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50";
+---
+
+<BaseLayout title="Dashboard / CMS" description="Manage homepage and session content.">
+  <main class="min-h-screen bg-[#f5f5f3] px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl space-y-8">
+      <header class={`${panelClass} flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between`}>
+        <div class="max-w-3xl">
+          <h1 class="text-3xl font-semibold leading-tight text-gray-900 sm:text-4xl">Dashboard</h1>
+          <p class="mt-2 text-sm leading-6 text-gray-600 sm:text-base">
+            Manage the homepage content, session groups, and session records from one place.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="/" class={secondaryButtonClass}>
+            Back to Site
+          </a>
+          <form action="/api/auth/logout" method="post">
+            <button type="submit" class={secondaryButtonClass}>
+              Log Out
+            </button>
+          </form>
+        </div>
+      </header>
+
+      <div class="space-y-3">
+        {statusMessage && (
+          <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            {statusMessage}
+          </div>
+        )}
+
+        {warningMessage && (
+          <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <p>{warningMessage}</p>
+          </div>
+        )}
+      </div>
+
+      <section class="grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+        <form
+          action="/api/cms/site-content"
+          method="post"
+          enctype="multipart/form-data"
+          data-cms-history-form
+          class={panelClass}
+        >
+          <div class="flex flex-col gap-1">
+            <h2 class="text-2xl font-semibold text-gray-900">Homepage Content</h2>
+            <p class="text-sm text-gray-600">Update the header image, title, description, and survey card.</p>
+          </div>
+
+          <div class="mt-8 space-y-8">
+            <section class="space-y-4">
+              <h3 class="text-base font-semibold text-gray-900">Header</h3>
+              <input name="heroImageSrc" type="hidden" value={site.hero.imageSrc} />
+              <div class="grid gap-4 sm:grid-cols-2">
+                <label class="block text-sm font-medium text-gray-700 sm:col-span-2">
+                  Upload Header Image
+                  <input
+                    id="cms-hero-image-file"
+                    name="heroImageFile"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/gif,image/avif,image/svg+xml"
+                    class="mt-2 block w-full cursor-pointer rounded-lg border border-dashed border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-700 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-gray-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:border-gray-400 hover:bg-gray-100"
+                  />
+                  <span class="mt-2 block text-xs text-gray-500">
+                    PNG, JPG, WebP, GIF, AVIF, or SVG up to 4 MB.
+                  </span>
+                </label>
+                <label class="block text-sm font-medium text-gray-700 sm:col-span-2">
+                  Header Image Alt Text
+                  <input name="heroImageAlt" type="text" required value={site.hero.imageAlt} class={inputClass} />
+                </label>
+                <label class="block text-sm font-medium text-gray-700 sm:col-span-2">
+                  Header Title
+                  <input name="heroTitle" type="text" required value={site.hero.title} class={inputClass} />
+                </label>
+                <label class="block text-sm font-medium text-gray-700 sm:col-span-2">
+                  Header Description
+                  <textarea name="heroDescription" rows="4" required class={inputClass}
+                    >{site.hero.description}</textarea
+                  >
+                </label>
+              </div>
+            </section>
+
+            <section class="space-y-4">
+              <h3 class="text-base font-semibold text-gray-900">Survey Card</h3>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <label class="block text-sm font-medium text-gray-700 sm:col-span-2">
+                  Survey Title
+                  <input name="surveyTitle" type="text" required value={site.survey.title} class={inputClass} />
+                </label>
+                <label class="block text-sm font-medium text-gray-700 sm:col-span-2">
+                  Survey Description
+                  <textarea name="surveyDescription" rows="4" required class={inputClass}
+                    >{site.survey.description}</textarea
+                  >
+                </label>
+                <label class="block text-sm font-medium text-gray-700">
+                  Button Text
+                  <input
+                    name="surveyButtonText"
+                    type="text"
+                    required
+                    value={site.survey.buttonText}
+                    class={inputClass}
+                  />
+                </label>
+                <label class="block text-sm font-medium text-gray-700">
+                  Feedback Link
+                  <input
+                    name="surveyFeedbackUrl"
+                    type="url"
+                    required
+                    value={site.survey.feedbackUrl}
+                    class={inputClass}
+                  />
+                </label>
+              </div>
+            </section>
+          </div>
+
+          <div class="mt-8 flex justify-end border-t border-gray-200 pt-6">
+            <button type="submit" class={primaryButtonClass}>
+              Save Homepage Content
+            </button>
+          </div>
+        </form>
+
+        <section class={panelClass}>
+          <h2 class="text-2xl font-semibold text-gray-900">Header Image Preview</h2>
+          <div class="mt-6 rounded-lg border border-gray-200 bg-gray-50 p-6">
+            <img
+              id="cms-hero-image-preview"
+              data-original-src={site.hero.imageSrc}
+              src={site.hero.imageSrc}
+              alt={site.hero.imageAlt}
+              class="mx-auto min-h-[20rem] max-h-[36rem] w-full object-contain"
+            />
+          </div>
+        </section>
+      </section>
+
+      <section class="space-y-6">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900">Sessions</h2>
+            <p class="mt-1 text-sm text-gray-600">
+              Edit groups, change order, and manage individual session records.
+            </p>
+          </div>
+          <p class="text-sm text-gray-500">Each form saves directly to the database.</p>
+        </div>
+        <div class="space-y-6">
+          <form
+            action="/api/cms/session-group"
+            method="post"
+            data-cms-history-form
+            class={panelClass}
+          >
+            <input type="hidden" name="_intent" value="create" />
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h3 class="text-xl font-semibold text-gray-900">Add Session Group</h3>
+                <p class="mt-1 text-sm text-gray-600">Create a new workshop or focus group block.</p>
+              </div>
+              <button type="submit" class={primaryButtonClass}>
+                Add Session Group
+              </button>
+            </div>
+            <div class="mt-5 grid gap-4 md:grid-cols-3">
+              <label class="block text-sm font-medium text-gray-700">
+                Group Title
+                <input name="title" type="text" required class={inputClass} />
+              </label>
+              <label class="block text-sm font-medium text-gray-700">
+                Group Time
+                <input name="time" type="text" required class={inputClass} />
+              </label>
+              <label class="block text-sm font-medium text-gray-700">
+                Section Type
+                <select name="sectionType" class={selectClass}>
+                  <option value="workshop">Workshop</option>
+                  <option value="focus">Focus Group</option>
+                </select>
+              </label>
+            </div>
+          </form>
+
+          {
+            sessionGroups.map((group) => {
+              const groupCategory = getSessionGroupCategory(group);
+              const groupOrderOptions =
+                groupCategory === "workshop" ? workshopGroups : focusGroups;
+              const groupPosition = groupOrderOptions.findIndex((candidate) => candidate.id === group.id) + 1;
+              const groupCategoryLabel =
+                groupCategory === "workshop" ? "Workshop groups" : "Focus groups";
+
+              return (
+                <section class={panelClass}>
+                <form
+                  action="/api/cms/session-group"
+                  method="post"
+                  data-cms-history-form
+                  class="space-y-4"
+                >
+                  <input type="hidden" name="id" value={group.id} />
+                  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                      <h3 class="text-xl font-semibold text-gray-900">{group.title}</h3>
+                      <p class="mt-1 text-sm text-gray-600">{group.time}</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                      <button type="submit" class={primaryButtonClass}>
+                        Save Group
+                      </button>
+                      <button
+                        type="submit"
+                        name="_intent"
+                        value="delete"
+                        formnovalidate
+                        data-confirm="Delete this session group and all of its session records?"
+                        class={dangerButtonClass}
+                      >
+                        Delete Group
+                      </button>
+                    </div>
+                  </div>
+                  <div class="grid gap-4 md:grid-cols-3">
+                    <label class="block text-sm font-medium text-gray-700">
+                      Group Title
+                      <input name="title" type="text" required value={group.title} class={inputClass} />
+                    </label>
+                    <label class="block text-sm font-medium text-gray-700">
+                      Group Time
+                      <input name="time" type="text" required value={group.time} class={inputClass} />
+                    </label>
+                    <label class="block text-sm font-medium text-gray-700">
+                      Section Type
+                      <select name="sectionType" class={selectClass}>
+                        <option
+                          value="workshop"
+                          selected={getSessionGroupCategory(group) === "workshop"}
+                        >
+                          Workshop
+                        </option>
+                        <option value="focus" selected={getSessionGroupCategory(group) === "focus"}>
+                          Focus Group
+                        </option>
+                      </select>
+                    </label>
+                  </div>
+                </form>
+
+                <form
+                  action="/api/cms/session-group"
+                  method="post"
+                  data-cms-history-form
+                  class={`mt-6 ${nestedPanelClass}`}
+                >
+                  <input type="hidden" name="_intent" value="reorder" />
+                  <input type="hidden" name="id" value={group.id} />
+                  <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                      <h4 class="text-sm font-semibold text-gray-900">Display Order</h4>
+                      <p class="mt-1 text-sm text-gray-600">
+                        {
+                          groupOrderOptions.length > 1
+                            ? `This group is position ${groupPosition} of ${groupOrderOptions.length} within ${groupCategoryLabel}. Choose the destination spot directly.`
+                            : `This is the only group in ${groupCategoryLabel}.`
+                        }
+                      </p>
+                    </div>
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+                      <label class="block text-sm font-medium text-gray-700">
+                        Move to position
+                        <select
+                          name="targetPosition"
+                          disabled={groupOrderOptions.length < 2}
+                          class={`${selectClass} min-w-56 disabled:cursor-not-allowed disabled:opacity-60`}
+                        >
+                          {
+                            groupOrderOptions.map((candidate, index) => (
+                              <option value={index + 1} selected={candidate.id === group.id}>
+                                {index + 1}. {candidate.title}
+                              </option>
+                            ))
+                          }
+                        </select>
+                      </label>
+                      <button
+                        type="submit"
+                        disabled={groupOrderOptions.length < 2}
+                        class={secondaryButtonClass}
+                      >
+                        Move Group
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="mt-8 grid gap-4">
+                  {
+                    group.sessions.map((session, sessionIndex) => (
+                      <section id={`cms-session-${session.id}`} class={`${nestedPanelClass} scroll-mt-6`}>
+                        <form
+                          action="/api/cms/session"
+                          method="post"
+                          data-cms-history-form
+                          data-cms-session-reorder-form
+                          class="rounded-lg border border-gray-200 bg-white p-4"
+                        >
+                          <input type="hidden" name="_intent" value="reorder" />
+                          <input type="hidden" name="id" value={session.id} />
+                          <input type="hidden" name="groupId" value={group.id} />
+                          <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                            <div>
+                              <h4 class="text-sm font-semibold text-gray-900">Display Order</h4>
+                              <p class="mt-1 text-sm text-gray-600">
+                                {
+                                  group.sessions.length > 1
+                                    ? `This session is position ${sessionIndex + 1} of ${group.sessions.length} within ${group.title}.`
+                                    : `This is the only session in ${group.title}.`
+                                }
+                              </p>
+                            </div>
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+                              <label class="block text-sm font-medium text-gray-700">
+                                Move to position
+                                <select
+                                  name="targetPosition"
+                                  disabled={group.sessions.length < 2}
+                                  class={`${selectClass} min-w-64 disabled:cursor-not-allowed disabled:opacity-60`}
+                                >
+                                  {
+                                    group.sessions.map((candidate, index) => (
+                                      <option value={index + 1} selected={candidate.id === session.id}>
+                                        {index + 1}. Session {candidate.letter} {candidate.title}
+                                      </option>
+                                    ))
+                                  }
+                                </select>
+                              </label>
+                              <button
+                                type="submit"
+                                disabled={group.sessions.length < 2}
+                                class={secondaryButtonClass}
+                              >
+                                Move Session
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+
+                        <form
+                          action="/api/cms/session"
+                          method="post"
+                          data-cms-history-form
+                          class="mt-4"
+                        >
+                          <input type="hidden" name="id" value={session.id} />
+                          <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                            <div>
+                              <h4 class="text-lg font-semibold text-gray-900">{session.title}</h4>
+                              <p class="mt-1 text-sm text-gray-600">Session {session.letter}</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-3">
+                              <button type="submit" class={secondaryButtonClass}>
+                                Save Session
+                              </button>
+                              <button
+                                type="submit"
+                                name="_intent"
+                                value="delete"
+                                formnovalidate
+                                data-confirm="Delete this session record?"
+                                class={dangerButtonClass}
+                              >
+                                Delete Session
+                              </button>
+                            </div>
+                          </div>
+
+                          <div class="mt-5 grid gap-4 md:grid-cols-[120px_minmax(0,1fr)]">
+                            <label class="block text-sm font-medium text-gray-700">
+                              Letter
+                              <input
+                                name="letter"
+                                type="text"
+                                required
+                                value={session.letter}
+                                class={inputClass}
+                              />
+                            </label>
+                            <label class="block text-sm font-medium text-gray-700">
+                              Title
+                              <input
+                                name="title"
+                                type="text"
+                                required
+                                value={session.title}
+                                class={inputClass}
+                              />
+                            </label>
+                          </div>
+
+                          <label class="mt-4 block text-sm font-medium text-gray-700">
+                            Description
+                            <textarea
+                              name="description"
+                              rows="4"
+                              required
+                              class={inputClass}
+                            >{session.description}</textarea>
+                          </label>
+
+                          <div class="mt-4 grid gap-4 md:grid-cols-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                              Feedback URL
+                              <input
+                              name="feedbackUrl"
+                              type="url"
+                              required
+                              value={session.feedbackUrl}
+                              class={inputClass}
+                            />
+                          </label>
+                          <label class="block text-sm font-medium text-gray-700">
+                              Button Text
+                              <input
+                              name="buttonText"
+                              type="text"
+                              value={session.buttonText ?? "Submit Feedback"}
+                              class={inputClass}
+                            />
+                          </label>
+                        </div>
+                        </form>
+                      </section>
+                    ))
+                  }
+
+                  <form
+                    action="/api/cms/session"
+                    method="post"
+                    data-cms-history-form
+                    class={nestedPanelClass}
+                  >
+                    <input type="hidden" name="_intent" value="create" />
+                    <input type="hidden" name="groupId" value={group.id} />
+                    <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                      <div>
+                        <h4 class="text-lg font-semibold text-gray-900">Add Session Record</h4>
+                        <p class="mt-1 text-sm text-gray-600">Create a new session inside {group.title}.</p>
+                      </div>
+                      <button type="submit" class={primaryButtonClass}>
+                        Add Session Record
+                      </button>
+                    </div>
+
+                    <div class="mt-5 grid gap-4 md:grid-cols-[120px_minmax(0,1fr)]">
+                      <label class="block text-sm font-medium text-gray-700">
+                        Letter
+                        <input name="letter" type="text" required class={inputClass} />
+                      </label>
+                      <label class="block text-sm font-medium text-gray-700">
+                        Title
+                        <input name="title" type="text" required class={inputClass} />
+                      </label>
+                    </div>
+
+                    <label class="mt-4 block text-sm font-medium text-gray-700">
+                      Description
+                      <textarea
+                        name="description"
+                        rows="4"
+                        required
+                        class={inputClass}
+                      ></textarea>
+                    </label>
+
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                      <label class="block text-sm font-medium text-gray-700">
+                        Feedback URL
+                        <input
+                          name="feedbackUrl"
+                          type="url"
+                          required
+                          class={inputClass}
+                        />
+                      </label>
+                      <label class="block text-sm font-medium text-gray-700">
+                        Button Text
+                        <input
+                          name="buttonText"
+                          type="text"
+                          value="Submit Feedback"
+                          class={inputClass}
+                        />
+                      </label>
+                    </div>
+                  </form>
+                </div>
+              </section>
+              );
+            })
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="fixed bottom-4 left-4 z-50 flex items-center gap-3">
+    <button type="button" id="cms-undo-button" disabled class={stickyButtonClass}>
+      Undo
+    </button>
+    <button type="button" id="cms-redo-button" disabled class={stickyButtonClass}>
+      Forward
+    </button>
+  </div>
+
+  <script
+    id="cms-current-snapshot"
+    type="application/json"
+    is:inline
+    set:html={currentSnapshotJson}
+  ></script>
+  <script is:inline>
+    const undoButton = document.querySelector("#cms-undo-button");
+    const redoButton = document.querySelector("#cms-redo-button");
+    const snapshotElement = document.querySelector("#cms-current-snapshot");
+    const heroImageFileInput = document.querySelector("#cms-hero-image-file");
+    const heroImagePreview = document.querySelector("#cms-hero-image-preview");
+    const historyStorageKey = "cms-history-v2";
+    const pendingStorageKey = "cms-history-pending-v2";
+    const sessionReorderFocusStorageKey = "cms-session-reorder-focus-v1";
+    const maxSnapshots = 40;
+    const successStatuses = new Set([
+      "site-saved",
+      "group-created",
+      "group-deleted",
+      "group-reordered",
+      "group-saved",
+      "session-created",
+      "session-deleted",
+      "session-reordered",
+      "session-saved",
+      "history-undone",
+      "history-redone",
+    ]);
+    const currentUrl = new URL(window.location.href);
+    const currentStatus = currentUrl.searchParams.get("status");
+    const currentSnapshot = parseJson(
+      snapshotElement instanceof HTMLScriptElement ? snapshotElement.textContent : null,
+      null,
+    );
+
+    function parseJson(value, fallbackValue) {
+      if (!value) {
+        return fallbackValue;
+      }
+
+      try {
+        return JSON.parse(value);
+      } catch {
+        return fallbackValue;
+      }
+    }
+
+    function loadHistoryState() {
+      return parseJson(window.sessionStorage.getItem(historyStorageKey), {
+        undoStack: [],
+        redoStack: [],
+      });
+    }
+
+    function saveHistoryState(nextHistoryState) {
+      window.sessionStorage.setItem(historyStorageKey, JSON.stringify(nextHistoryState));
+    }
+
+    function clearPendingSnapshot() {
+      window.sessionStorage.removeItem(pendingStorageKey);
+    }
+
+    function clearSessionReorderFocus() {
+      window.sessionStorage.removeItem(sessionReorderFocusStorageKey);
+    }
+
+    function loadSessionReorderFocus() {
+      return window.sessionStorage.getItem(sessionReorderFocusStorageKey);
+    }
+
+    function saveSessionReorderFocus(sessionId) {
+      window.sessionStorage.setItem(sessionReorderFocusStorageKey, sessionId);
+    }
+
+    function loadPendingSnapshot() {
+      return parseJson(window.sessionStorage.getItem(pendingStorageKey), null);
+    }
+
+    function savePendingSnapshot(snapshot) {
+      window.sessionStorage.setItem(
+        pendingStorageKey,
+        JSON.stringify({
+          snapshot,
+          createdAt: Date.now(),
+        }),
+      );
+    }
+
+    function trimHistoryStack(stack) {
+      if (!Array.isArray(stack)) {
+        return [];
+      }
+
+      return stack.slice(-maxSnapshots);
+    }
+
+    function snapshotsAreEqual(left, right) {
+      return JSON.stringify(left) === JSON.stringify(right);
+    }
+
+    let historyState = loadHistoryState();
+    historyState.undoStack = trimHistoryStack(historyState.undoStack);
+    historyState.redoStack = trimHistoryStack(historyState.redoStack);
+
+    const pendingSnapshot = loadPendingSnapshot();
+
+    if (pendingSnapshot) {
+      if (
+        successStatuses.has(currentStatus ?? "") &&
+        pendingSnapshot.snapshot &&
+        !snapshotsAreEqual(pendingSnapshot.snapshot, currentSnapshot)
+      ) {
+        historyState.undoStack.push(pendingSnapshot.snapshot);
+        historyState.undoStack = trimHistoryStack(historyState.undoStack);
+        historyState.redoStack = [];
+        saveHistoryState(historyState);
+      }
+
+      clearPendingSnapshot();
+    } else {
+      saveHistoryState(historyState);
+    }
+
+    if (currentStatus === "session-reordered") {
+      const sessionReorderFocusId = loadSessionReorderFocus();
+
+      if (sessionReorderFocusId) {
+        window.requestAnimationFrame(() => {
+          const targetSession = document.getElementById(`cms-session-${sessionReorderFocusId}`);
+          targetSession?.scrollIntoView({
+            block: "center",
+            behavior: "auto",
+          });
+        });
+      }
+
+      clearSessionReorderFocus();
+    } else if (currentStatus !== "save-failed") {
+      clearSessionReorderFocus();
+    }
+
+    document.addEventListener("submit", (event) => {
+      const submitter = event.submitter;
+      const confirmMessage =
+        submitter instanceof HTMLButtonElement ? submitter.dataset.confirm : undefined;
+
+      if (confirmMessage && !window.confirm(confirmMessage)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (
+        event.target instanceof HTMLFormElement &&
+        event.target.matches("form[data-cms-history-form]") &&
+        currentSnapshot
+      ) {
+        savePendingSnapshot(currentSnapshot);
+      }
+
+      if (event.target instanceof HTMLFormElement && event.target.matches("form[data-cms-session-reorder-form]")) {
+        const sessionIdField = event.target.querySelector('input[name="id"]');
+
+        if (sessionIdField instanceof HTMLInputElement && sessionIdField.value) {
+          saveSessionReorderFocus(sessionIdField.value);
+        }
+      }
+    });
+
+    function updateHistoryButtons() {
+      if (undoButton instanceof HTMLButtonElement) {
+        undoButton.disabled = historyState.undoStack.length === 0;
+      }
+
+      if (redoButton instanceof HTMLButtonElement) {
+        redoButton.disabled = historyState.redoStack.length === 0;
+      }
+    }
+
+    async function restoreSnapshot(direction) {
+      const sourceStack = direction === "undo" ? historyState.undoStack : historyState.redoStack;
+      const targetSnapshot = sourceStack[sourceStack.length - 1];
+
+      if (!targetSnapshot || !currentSnapshot) {
+        return;
+      }
+
+      const nextHistoryState = {
+        undoStack: [...historyState.undoStack],
+        redoStack: [...historyState.redoStack],
+      };
+
+      if (direction === "undo") {
+        nextHistoryState.undoStack.pop();
+        nextHistoryState.redoStack.push(currentSnapshot);
+        nextHistoryState.redoStack = trimHistoryStack(nextHistoryState.redoStack);
+      } else {
+        nextHistoryState.redoStack.pop();
+        nextHistoryState.undoStack.push(currentSnapshot);
+        nextHistoryState.undoStack = trimHistoryStack(nextHistoryState.undoStack);
+      }
+
+      if (undoButton instanceof HTMLButtonElement) {
+        undoButton.disabled = true;
+      }
+
+      if (redoButton instanceof HTMLButtonElement) {
+        redoButton.disabled = true;
+      }
+
+      try {
+        const response = await fetch("/api/cms/history", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            snapshot: targetSnapshot,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("History restore failed.");
+        }
+
+        historyState = nextHistoryState;
+        saveHistoryState(historyState);
+        clearPendingSnapshot();
+
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set("status", direction === "undo" ? "history-undone" : "history-redone");
+        nextUrl.searchParams.delete("error");
+        window.location.assign(`${nextUrl.pathname}?${nextUrl.searchParams.toString()}`);
+      } catch (error) {
+        updateHistoryButtons();
+        window.alert(error instanceof Error ? error.message : "History restore failed.");
+      }
+    }
+
+    updateHistoryButtons();
+
+    if (undoButton instanceof HTMLButtonElement) {
+      undoButton.addEventListener("click", () => {
+        restoreSnapshot("undo");
+      });
+    }
+
+    if (redoButton instanceof HTMLButtonElement) {
+      redoButton.addEventListener("click", () => {
+        restoreSnapshot("redo");
+      });
+    }
+
+    let heroImageObjectUrl = "";
+
+    if (heroImageFileInput instanceof HTMLInputElement && heroImagePreview instanceof HTMLImageElement) {
+      heroImageFileInput.addEventListener("change", () => {
+        const selectedFile = heroImageFileInput.files?.[0];
+
+        if (heroImageObjectUrl) {
+          URL.revokeObjectURL(heroImageObjectUrl);
+          heroImageObjectUrl = "";
+        }
+
+        if (!selectedFile) {
+          heroImagePreview.src = heroImagePreview.dataset.originalSrc ?? heroImagePreview.src;
+          return;
+        }
+
+        heroImageObjectUrl = URL.createObjectURL(selectedFile);
+        heroImagePreview.src = heroImageObjectUrl;
+      });
+    }
+  </script>
+</BaseLayout>

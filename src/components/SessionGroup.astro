@@ -12,13 +12,13 @@ const summaryId = `${group.id}-summary`;
 const panelId = `${group.id}-panel`;
 ---
 
-<details class="group mb-10 rounded-lg border border-gray-200 bg-white shadow-lg">
+<details class="group mx-auto mb-10 w-full max-w-3xl rounded-lg border border-gray-200 bg-white shadow-lg">
   <summary
     id={summaryId}
     aria-controls={panelId}
     class="session-summary list-none cursor-pointer focus-visible:rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-[#733a84]/25 [&::-webkit-details-marker]:hidden"
   >
-    <div class="flex items-center justify-between gap-2 px-2 py-3 text-left text-lg font-semibold text-gray-800 transition-all hover:no-underline">
+    <div class="flex items-center justify-between gap-4 px-4 py-3 text-left text-lg font-semibold text-gray-800 transition-all hover:no-underline">
       <SessionHeader headerTitle={group.title} headerTime={group.time} />
       <svg
         class="session-chevron pointer-events-none h-4 w-4 shrink-0 translate-y-0.5 text-gray-500 transition-transform duration-200"

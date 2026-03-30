@@ -4,17 +4,14 @@ import type { Session } from "../data/sessions";
 interface Props extends Session {}
 
 const {
+  id,
   letter,
   title,
   description,
   feedbackUrl,
   buttonText = "Submit Feedback",
 } = Astro.props;
-const headingSlug = `${letter}-${title}-${feedbackUrl}`
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")
-  .replace(/^-+|-+$/g, "");
-const headingId = `session-${headingSlug}`;
+const headingId = `session-${id}`;
 ---
 
 <article aria-labelledby={headingId} class="w-full rounded-md border border-gray-200 px-4 py-3">
@@ -28,7 +25,7 @@ const headingId = `session-${headingSlug}`;
     target="_blank"
     rel="noopener noreferrer"
     aria-label={`Submit feedback for ${title} (opens in a new tab)`}
-    class="inline-flex items-center justify-center rounded-md bg-[#733a84] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#733a84]"
+    class="inline-flex cursor-pointer items-center justify-center rounded-md bg-[#733a84] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#733a84]"
   >
     {buttonText}
   </a>

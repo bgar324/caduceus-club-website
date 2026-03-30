@@ -7,11 +7,11 @@ interface Props {
 const { headerTitle, headerTime } = Astro.props;
 ---
 
-<div class="mx-auto flex items-center justify-center">
-  <div class="flex w-fit items-center gap-3">
+<div class="flex min-w-0 flex-1 items-center justify-between gap-4">
+  <div class="flex min-w-0 items-center">
     <h2 class="flex w-fit items-center justify-center rounded-lg bg-[#733a84] px-2 py-2.5 text-sm font-semibold tracking-wide text-white shadow-md whitespace-nowrap">
       <span class="font-bold">{headerTitle}</span>
     </h2>
-    <p class="text-sm font-medium text-gray-800">{headerTime}</p>
   </div>
+  <p class="shrink-0 text-right text-sm font-medium text-gray-800 whitespace-nowrap">{headerTime}</p>
 </div>

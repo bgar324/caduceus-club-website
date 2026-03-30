@@ -1,4 +1,5 @@
 export interface Session {
+  id: string;
   letter: string;
   title: string;
   description: string;
@@ -15,12 +16,62 @@ export interface SessionGroup {
   sessions: Session[];
 }
 
-export const surveyUrl = "https://forms.gle/6kAsHAJNWZ6rGDqd9";
+export type SessionGroupCategory = "workshop" | "focus";
 
-export const sessionGroups: SessionGroup[] = [
+export interface HeroContent {
+  imageSrc: string;
+  imageAlt: string;
+  title: string;
+  description: string;
+}
+
+export interface SurveyContent {
+  title: string;
+  description: string;
+  buttonText: string;
+  feedbackUrl: string;
+}
+
+export interface SiteContent {
+  id: string;
+  hero: HeroContent;
+  survey: SurveyContent;
+}
+
+export interface HomepageContent {
+  site: SiteContent;
+  sessionGroups: SessionGroup[];
+}
+
+type SessionSeed = Omit<Session, "id">;
+type SessionGroupSeed = Omit<SessionGroup, "sessions"> & {
+  sessions: SessionSeed[];
+};
+
+export const defaultSiteContent: SiteContent = {
+  id: "site",
+  hero: {
+    imageSrc: "/static/15th-annual-hpc-graphic-crop-v1.png",
+    imageAlt: "15th Annual Health Professions Conference Logo",
+    title: "15th Annual Health Professions Conference",
+    description:
+      "We'd love to hear your thoughts — scroll down to find your session and send us your feedback.",
+  },
+  survey: {
+    title: "Annual Health Professions Conference Survey",
+    description:
+      "Thank you for attending! Please fill out this quick survey so we may improve next year.",
+    buttonText: "Provide Feedback",
+    feedbackUrl: "https://forms.gle/6kAsHAJNWZ6rGDqd9",
+  },
+};
+
+export const surveyUrl = defaultSiteContent.survey.feedbackUrl;
+
+const sessionGroupSeeds: SessionGroupSeed[] = [
   {
     id: "workshop-1",
-    sectionId: "Workshop 1 Sessions",
+    sectionId: "workshop",
     title: "Workshop 1 Sessions",
     time: "10:10 am - 11:05 am",
     sessionListClass: "pt-2",
@@ -71,7 +122,7 @@ export const sessionGroups: SessionGroup[] = [
   },
   {
     id: "workshop-2",
-    sectionId: "Workshop 2 Sessions",
+    sectionId: "workshop",
     title: "Workshop 2 Sessions",
     time: "11:10 am - 12:05 pm",
     sessionListClass: "pt-2 pb-4",
@@ -123,7 +174,7 @@ export const sessionGroups: SessionGroup[] = [
   },
   {
     id: "workshop-3",
-    sectionId: "Workshop 3 Sessions",
+    sectionId: "workshop",
     title: "Workshop 3 Sessions",
     time: "12:10 pm - 1:05 pm",
     sessionListClass: "pt-2 pb-4",
@@ -174,7 +225,7 @@ export const sessionGroups: SessionGroup[] = [
   },
   {
     id: "focus-group-1",
-    sectionId: "Focus Group 1 Sessions",
+    sectionId: "focus",
     title: "Focus Group 1 Sessions",
     time: "3:00 pm - 3:45 pm",
     sessionListClass: "pt-2 pb-4",
@@ -219,7 +270,7 @@ export const sessionGroups: SessionGroup[] = [
   },
   {
     id: "focus-group-2",
-    sectionId: "Focus Group 2 Sessions",
+    sectionId: "focus",
     title: "Focus Group 2 Sessions",
     time: "3:45 pm - 4:30 pm",
     sessionListClass: "pt-2 pb-4",
@@ -255,7 +306,7 @@ export const sessionGroups: SessionGroup[] = [
   },
   {
     id: "focus-group-3",
-    sectionId: "Focus Group 3 Sessions",
+    sectionId: "focus",
     title: "Focus Group 3 Sessions",
     time: "4:30 pm - 5:15 pm",
     sessionListClass: "pt-2 pb-4",
@@ -292,3 +343,28 @@ export const sessionGroups: SessionGroup[] = [
     ],
   },
 ];
+
+export const sessionGroups: SessionGroup[] = sessionGroupSeeds.map((group) => ({
+  ...group,
+  sessions: group.sessions.map((session, index) => ({
+    id: `${group.id}-session-${index + 1}`,
+    ...session,
+  })),
+}));
+
+export const defaultHomepageContent: HomepageContent = {
+  site: defaultSiteContent,
+  sessionGroups,
+};
+
+export function getSessionGroupCategory(
+  group: Pick<SessionGroup, "title" | "sectionId">,
+): SessionGroupCategory {
+  const normalizedValue = `${group.sectionId} ${group.title}`.toLowerCase();
+
+  if (normalizedValue.includes("focus")) {
+    return "focus";
+  }
+
+  return "workshop";
+}
