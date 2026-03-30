@@ -5,9 +5,37 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").trim();
 const serviceRoleKey = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim();
 const providedSeed = process.argv[2]?.trim();
-const seed = providedSeed && providedSeed.length > 0 ? providedSeed : crypto.randomUUID();
-const email = `${seed}@${seed}.com`;
-const password = seed;
+
+function bytesToUuid(bytes) {
+  const normalizedBytes = Buffer.from(bytes.subarray(0, 16));
+  normalizedBytes[6] = (normalizedBytes[6] & 0x0f) | 0x40;
+  normalizedBytes[8] = (normalizedBytes[8] & 0x3f) | 0x80;
+  const hex = normalizedBytes.toString("hex");
+
+  return [
+    hex.slice(0, 8),
+    hex.slice(8, 12),
+    hex.slice(12, 16),
+    hex.slice(16, 20),
+    hex.slice(20, 32),
+  ].join("-");
+}
+
+function getCredentialPart(label) {
+  if (!providedSeed || providedSeed.length === 0) {
+    return crypto.randomUUID();
+  }
+
+  const digest = crypto.createHash("sha256").update(`${providedSeed}:${label}`).digest();
+
+  return bytesToUuid(digest);
+}
+
+const emailLocalPart = getCredentialPart("email-local");
+const emailDomainLabel = getCredentialPart("email-domain");
+const emailSubdomainLabel = getCredentialPart("email-subdomain");
+const password = getCredentialPart("password");
+const email = `${emailLocalPart}@${emailDomainLabel}.${emailSubdomainLabel}.com`;
 
 if (!supabaseUrl) {
   console.error("NEXT_PUBLIC_SUPABASE_URL is required.");
@@ -120,6 +148,9 @@ console.log(
       userId: user.id,
       email,
       password,
+      emailLocalPart,
+      emailDomainLabel,
+      emailSubdomainLabel,
       role: "admin",
     },
     null,
