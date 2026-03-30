@@ -42,12 +42,3 @@ export function getConfiguredSupabasePublishableKey() {
 
   return candidates.find(isConfiguredPublicValue)?.trim();
 }
-
-export function getConfiguredSupabaseServiceRoleKey() {
-  const candidates = [
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
-    getSecret("SUPABASE_SERVICE_ROLE_KEY"),
-  ];
-
-  return candidates.find(isConfiguredPublicValue)?.trim();
-}

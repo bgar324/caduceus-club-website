@@ -49,10 +49,8 @@ This project is configured for Astro + Vercel with Supabase-backed CMS content a
 ## Admin Access
 - Dashboard login uses Supabase Auth email/password.
 - Dashboard access is restricted to users whose Supabase `app_metadata.role` is `admin`.
-- New admins should be invited from the dashboard with their email address after the first admin exists.
-- The invite flow requires `SUPABASE_SERVICE_ROLE_KEY` on the server in addition to the public Supabase URL and publishable key.
-- The invite email sends the admin to `/cms/set-password`, where they create their own password and then land in the CMS.
-- To bootstrap the first admin, run `npm run admin:invite -- admin@example.com https://caduceuswebsitev1.vercel.app`.
+- Bootstrap the central admin account with `npm run admin:backfill`.
+- The bootstrap script creates or updates one high-entropy admin user in Supabase Auth and demotes any previous admin accounts to a non-admin role.
 
 ## Credits
 **Developed by:** Benjamin Garcia
