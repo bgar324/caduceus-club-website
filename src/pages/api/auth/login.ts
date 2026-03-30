@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import {
   getSafeNextPath,
   isAdminAuthConfigured,
+  isSupabaseAdminUser,
   redirectToLogin,
   setSupabaseSession,
   signInWithSupabasePassword,
@@ -27,6 +28,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   if (error || !data.session) {
     return redirectToLogin("invalid-credentials", nextPath);
+  }
+
+  if (!isSupabaseAdminUser(data.user)) {
+    return redirectToLogin("not-authorized", nextPath);
   }
 
   setSupabaseSession(cookies, data.session);

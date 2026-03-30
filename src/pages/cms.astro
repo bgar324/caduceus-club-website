@@ -1,12 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getSessionGroupCategory } from "../data/sessions";
+import { isAdminInviteConfigured } from "../lib/auth";
 import { getCmsStatusMessage, getHomepageContent } from "../lib/content";
 
 const homepageContent = await getHomepageContent();
 const { site, sessionGroups } = homepageContent.content;
 const workshopGroups = sessionGroups.filter((group) => getSessionGroupCategory(group) === "workshop");
 const focusGroups = sessionGroups.filter((group) => getSessionGroupCategory(group) === "focus");
+const inviteConfigured = isAdminInviteConfigured();
 const statusMessage = getCmsStatusMessage(Astro.url.searchParams.get("status"));
 const errorMessage = Astro.url.searchParams.get("error");
 const warningMessage = errorMessage ?? homepageContent.warning;
@@ -61,6 +63,42 @@ const stickyButtonClass =
           </div>
         )}
       </div>
+
+      <section class={panelClass}>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900">Invite Admin</h2>
+            <p class="mt-1 text-sm text-gray-600">
+              Enter an email address and send a Supabase invite so the admin can create their own password.
+            </p>
+          </div>
+        </div>
+
+        {!inviteConfigured && (
+          <div class="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            Admin invites are not configured yet. Set <code>SUPABASE_SERVICE_ROLE_KEY</code> on the server before using this form.
+          </div>
+        )}
+
+        <form action="/api/cms/admin-invite" method="post" class="mt-6 grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto]">
+          <label class="block text-sm font-medium text-gray-700">
+            Admin Email
+            <input
+              name="email"
+              type="email"
+              required
+              autocomplete="email"
+              placeholder="admin@example.com"
+              class={inputClass}
+            />
+          </label>
+          <div class="sm:self-end">
+            <button type="submit" class={primaryButtonClass} disabled={!inviteConfigured}>
+              Send Invite
+            </button>
+          </div>
+        </form>
+      </section>
 
       <section class="grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
         <form

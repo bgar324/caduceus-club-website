@@ -741,6 +741,8 @@ export async function restoreHomepageContent(snapshot: unknown) {
 
 export function getCmsStatusMessage(status: string | null) {
   switch (status) {
+    case "admin-invite-sent":
+      return "Admin invite email sent.";
     case "group-reordered":
       return "Session group order updated.";
     case "history-redone":
@@ -763,6 +765,8 @@ export function getCmsStatusMessage(status: string | null) {
       return "Session order updated.";
     case "session-saved":
       return "Session updated.";
+    case "password-set":
+      return "Password updated.";
     default:
       return null;
   }

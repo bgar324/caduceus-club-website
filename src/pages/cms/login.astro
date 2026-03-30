@@ -14,6 +14,8 @@ function getLoginMessage(code: string | null) {
       return "Incorrect email or password.";
     case "login-required":
       return "Log in to access the dashboard.";
+    case "not-authorized":
+      return "This account does not have dashboard access.";
     default:
       return null;
   }
@@ -48,7 +50,7 @@ const secondaryButtonClass =
       <div class="flex flex-col gap-2">
         <h1 class="text-3xl font-semibold text-gray-900">Dashboard Login</h1>
         <p class="text-sm leading-6 text-gray-600">
-          Enter the admin email and password to manage the conference site content.
+          Dashboard access is invite-only. Enter the invited admin email and password to manage the conference site content.
         </p>
       </div>
 

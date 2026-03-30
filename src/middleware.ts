@@ -3,6 +3,7 @@ import {
   clearSupabaseSession,
   getAuthenticatedSupabaseUser,
   getSafeNextPath,
+  isSupabaseAdminUser,
   redirectToLogin,
   setSupabaseSession,
 } from "./lib/auth";
@@ -21,13 +22,19 @@ export const onRequest = defineMiddleware(async (context, next) => {
       setSupabaseSession(context.cookies, refreshedSession);
     }
 
-    if (user) {
+    if (isSupabaseAdminUser(user)) {
       return new Response(null, {
         status: 303,
         headers: {
           Location: getSafeNextPath(context.url.searchParams.get("next")),
         },
       });
+    }
+
+    if (user) {
+      clearSupabaseSession(context.cookies);
+
+      return redirectToLogin("not-authorized");
     }
 
     return next();
@@ -43,8 +50,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
     setSupabaseSession(context.cookies, refreshedSession);
   }
 
-  if (user) {
+  if (isSupabaseAdminUser(user)) {
     return next();
+  }
+
+  if (user) {
+    clearSupabaseSession(context.cookies);
+
+    return redirectToLogin("not-authorized");
   }
 
   clearSupabaseSession(context.cookies);
